@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
 using XLua;
 
+//类方法的说明，说明了哪些泛型方法可以生成lua方法
+
 public class GenericMethodExample : MonoBehaviour
 {
+    //首先连接了两个子类，目的是可以使用：运算符将自己作为static函数的首个参数
+    //之后测试了各个类型的泛型方法，并且输出了泛型实现的接口。
+    //泛型函数要有要求，这个foo.cs有说
     private const string script = @"
         local foo1 = CS.Foo1Child()
         local foo2 = CS.Foo2Child()

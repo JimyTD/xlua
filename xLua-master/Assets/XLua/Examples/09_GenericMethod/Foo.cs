@@ -74,6 +74,7 @@ public class Foo
 [LuaCallCSharp]
 public static class FooExtension
 {
+    //this扩展方法,使得可以使用：操作符在lua中使用
     public static void PlainExtension(this Foo1Parent a)
     {
         Debug.Log("PlainExtension");
@@ -99,5 +100,5 @@ public static class FooExtension
     public static T UnsupportedExtension<T>(this GameObject obj) where T : Component
     {
         return obj.GetComponent<T>();
-    }
+    }//没有把泛型当作参数,所以unsupported
 }
