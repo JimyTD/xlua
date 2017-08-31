@@ -8,10 +8,10 @@ using XLua;
 public class UsageTest : MonoBehaviour {
 
     // Use this for initialization
-    TextAsset luaScript;
-    LuaTable scriptEnv;
-    Action rotate;
-    Action move;
+    public TextAsset luaScript;
+    public LuaTable scriptEnv;
+    public Action rotate;
+    public Action move;
     void Start () {
         //新建luaEnv:lua全局环境对象；scriptEnv:关联对象
         LuaEnv luaenv = new LuaEnv();
