@@ -1,0 +1,24 @@
+local speed = 10
+
+local pos={}
+pos[x]=0
+pos[y]=0
+pos[z]=0
+
+
+function start()
+	print("lua start...")
+end
+
+function rotate()
+	local r = CS.UnityEngine.Vector3.up * CS.UnityEngine.Time.deltaTime * speed
+	self.transform:Rotate(r)
+end
+
+function move()
+	self.transform= CS.UnityEngine.Vector3(pos[x],pos[y],pos[z])
+
+function ondestroy()
+    print("lua destroy")
+end
+
