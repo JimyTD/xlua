@@ -12,6 +12,17 @@ public class UsageTest : MonoBehaviour {
     public LuaTable scriptEnv;
     public Action rotate;
     public Action move;
+    private int speed = 0;
+    float x=721/200, y=86/200, z=-433/200;
+    public void OnMove()
+    {
+        x += 10;
+    }
+    public void OnSpeed()
+    {
+        speed += 10;
+    }
+    public int cubeType;
     internal  static LuaEnv luaenv = new LuaEnv();
     internal static float lastGCTime = 0;
     internal const float GCInterval = 1;//1 second 
@@ -34,6 +45,10 @@ public class UsageTest : MonoBehaviour {
 
         //进行关联,放在dostring后面 使得函数先被声明 
         scriptEnv.Set("self", this);
+        scriptEnv.Set("x", x);
+        scriptEnv.Set("y", y);
+        scriptEnv.Set("z", z);
+        scriptEnv.Set("speed", speed);
         scriptEnv.Get("rotate", out rotate);
         scriptEnv.Get("move", out move);
 
@@ -44,11 +59,18 @@ public class UsageTest : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        rotate();
-        if (Time.time - LuaBehaviour.lastGCTime > GCInterval)//旋转的计时功能
+        if(cubeType==0)
         {
-            luaenv.Tick();
-            LuaBehaviour.lastGCTime = Time.time;
+            rotate();
+            if (Time.time - LuaBehaviour.lastGCTime > GCInterval)//旋转的计时功能
+            {
+                luaenv.Tick();
+                LuaBehaviour.lastGCTime = Time.time;
+            }
+        }
+        if(cubeType==1)
+        {
+            move();
         }
     }
 }

@@ -1,4 +1,4 @@
-local speed = 10
+
 
 
 function rotate()
@@ -8,13 +8,8 @@ end
 
 
 
-local pos={}
-pos["x"]=0
-pos["y"]=0
-pos["z"]=0
-
 
 function move()
-	self.transform= CS.UnityEngine.Vector3(pos["x"],pos["y"],pos["z"])
+	self.transform.position= CS.UnityEngine.Vector3(x,y,z)
 end
 
