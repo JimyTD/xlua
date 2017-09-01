@@ -4,7 +4,7 @@ using XLua;
 
 
 
-
+[LuaCallCSharp]
 public class UsageTest : MonoBehaviour {
 
     // Use this for initialization
@@ -12,9 +12,12 @@ public class UsageTest : MonoBehaviour {
     public LuaTable scriptEnv;
     public Action rotate;
     public Action move;
-    void Start () {
+    internal  static LuaEnv luaenv = new LuaEnv();
+    internal static float lastGCTime = 0;
+    internal const float GCInterval = 1;//1 second 
+    void Awake () {
         //新建luaEnv:lua全局环境对象；scriptEnv:关联对象
-        LuaEnv luaenv = new LuaEnv();
+       
         scriptEnv = luaenv.NewTable();
 
         //这里是设置元表 指定了索引为Global属性 Global属性在luaenv构造时被设置 
@@ -23,21 +26,29 @@ public class UsageTest : MonoBehaviour {
         scriptEnv.SetMetaTable(meta);
         meta.Dispose();//设置完元表是可以销毁的
 
-        //进行关联
+      
+
+        //执行lua脚本。如果要进行关联，必须先行进行dostring,否则空指针
+        luaenv.DoString(luaScript.text, "luaPart", scriptEnv);
+
+
+        //进行关联,放在dostring后面 使得函数先被声明 
         scriptEnv.Set("self", this);
         scriptEnv.Get("rotate", out rotate);
         scriptEnv.Get("move", out move);
 
-        //执行lua脚本
-        luaenv.DoString(luaScript.text, "lua", scriptEnv);
+        
 
-
-
-        luaenv.Dispose();
+     
     }
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+        rotate();
+        if (Time.time - LuaBehaviour.lastGCTime > GCInterval)//旋转的计时功能
+        {
+            luaenv.Tick();
+            LuaBehaviour.lastGCTime = Time.time;
+        }
+    }
 }
